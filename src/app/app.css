@@ -1,3 +1,37 @@
-.navbar, .navbar * {
+.header {
     display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 18px 20px;
+    background: linear-gradient(45deg, #b0bcff, #3333e2);
+}
+
+.nav {
+    text-decoration: double;
+    background-color: #b0bcff;
+    text-decoration: none;
+    display: flex;
+    gap: 20px;
+    border: 2px solid rgb(234, 235, 241);
+    border-style: solid;
+    border-radius: 10px 10px 10px 10px;
+    padding: 10px;   
+}
+
+.nav-link:hover {
+    color:#040b36;
+}
+
+.logo img {
+    width: 90px;
+    height: 90px;
+    margin-right: 20px;
+    border: 2px solid rgb(224, 226, 235);
+    border-style: solid;
+    border-radius: 10px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #124ae4;
 }
