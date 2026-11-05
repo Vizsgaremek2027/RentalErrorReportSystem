@@ -14,9 +14,9 @@ export class UserComponent {
   protected readonly reportService = inject(ReportService);
   private readonly fb = inject(NonNullableFormBuilder);
 
-  // Csak a bejelentkezett lakó saját bejelentései
+  // Csak a bejelentkezett lakó saját bejelentései (az e-mail cím azonosítja)
   protected readonly myReports = computed(() =>
-    this.reportService.reports().filter(r => r.reporter === this.auth.user()?.name),
+    this.reportService.reports().filter(r => r.reporter === this.auth.user()?.email),
   );
 
   protected readonly sent = signal(false);
@@ -32,7 +32,7 @@ export class UserComponent {
       this.form.markAllAsTouched();
       return;
     }
-    const reporter = this.auth.user()?.name;
+    const reporter = this.auth.user()?.email;
     if (!reporter) return;
     this.reportService.add(this.form.getRawValue(), reporter);
     this.form.reset();
