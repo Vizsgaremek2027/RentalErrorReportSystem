@@ -26,6 +26,10 @@
       <p class="field-error" role="alert">A két jelszó nem egyezik.</p>
     }
 
+    @if (error()) {
+      <p class="field-error" role="alert">{{ error() }}</p>
+    }
+
     <button type="submit" class="submit-btn">Regisztráció</button>
   </form>
 

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   NonNullableFormBuilder,
@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 function passwordsMatch(group: AbstractControl): ValidationErrors | null {
   const password = group.get('password')?.value;
@@ -23,6 +24,9 @@ function passwordsMatch(group: AbstractControl): ValidationErrors | null {
 export class RegisterComponent {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly router = inject(Router);
+  private readonly auth = inject(AuthService);
+
+  protected readonly error = signal('');
 
   protected readonly form = this.fb.group(
     {
@@ -39,7 +43,11 @@ export class RegisterComponent {
       this.form.markAllAsTouched();
       return;
     }
-    // IDEIGLENES: később ide jön a Laravel API hívás
-    this.router.navigate(['/login']);
+    const { name, email, password } = this.form.getRawValue();
+    if (this.auth.register(name, email, password)) {
+      this.router.navigate(['/login']);
+    } else {
+      this.error.set('Ezzel az e-mail címmel már van regisztráció.');
+    }
   }
 }
