@@ -1,0 +1,49 @@
+<section class="panel">
+  <h1>Üdv, {{ auth.user()?.name }}!</h1>
+
+  <h2>Új hibabejelentés</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label for="title">Mi a probléma? (rövid cím)</label>
+    <input id="title" type="text" formControlName="title" />
+    @if (form.controls.title.touched && form.controls.title.invalid) {
+      <p class="field-error" role="alert">Adj meg egy rövid címet.</p>
+    }
+
+    <label for="category">Kategória</label>
+    <select id="category" formControlName="category">
+      <option value="" disabled>Válassz kategóriát</option>
+      @for (c of reportService.categories; track c) {
+        <option [value]="c">{{ c }}</option>
+      }
+    </select>
+    @if (form.controls.category.touched && form.controls.category.invalid) {
+      <p class="field-error" role="alert">Válassz kategóriát.</p>
+    }
+
+    <label for="description">Részletes leírás</label>
+    <textarea id="description" rows="4" formControlName="description"></textarea>
+    @if (form.controls.description.touched && form.controls.description.invalid) {
+      <p class="field-error" role="alert">Írd le a hibát legalább 10 karakterben.</p>
+    }
+
+    <button type="submit" class="btn">Bejelentés beküldése</button>
+    @if (sent()) {
+      <p class="success" role="status">A bejelentést elküldtük a közös képviselőnek.</p>
+    }
+  </form>
+
+  <h2>Saját bejelentéseim</h2>
+  <ul class="reports">
+    @for (r of myReports(); track r.id) {
+      <li>
+        <div>
+          <strong>{{ r.title }}</strong>
+          <span class="category">{{ r.category }}</span>
+        </div>
+        <span class="badge">{{ r.status }}</span>
+      </li>
+    } @empty {
+      <li class="empty">Még nincs bejelentésed.</li>
+    }
+  </ul>
+</section>
