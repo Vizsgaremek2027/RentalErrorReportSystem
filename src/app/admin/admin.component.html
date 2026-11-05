@@ -1,1 +1,31 @@
-<p>admin works!</p>
+<section class="panel">
+  <h1>Admin felület</h1>
+  <p>Itt látod a lakók összes bejelentését, és módosíthatod a státuszukat.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Hiba</th><th>Kategória</th><th>Leírás</th><th>Bejelentő</th><th>Státusz</th></tr>
+      </thead>
+      <tbody>
+        @for (r of reportService.reports(); track r.id) {
+          <tr>
+            <td>{{ r.title }}</td>
+            <td>{{ r.category }}</td>
+            <td>{{ r.description }}</td>
+            <td>{{ r.reporter }}</td>
+            <td>
+              <select [attr.aria-label]="'Státusz: ' + r.title" (change)="onStatusChange(r.id, $event)">
+                @for (s of reportService.statuses; track s) {
+                  <option [value]="s" [selected]="s === r.status">{{ s }}</option>
+                }
+              </select>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5" class="empty">Még nem érkezett bejelentés.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
