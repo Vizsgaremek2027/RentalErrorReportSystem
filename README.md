@@ -1,59 +1,12 @@
-# RentalErrorReportSystem
+# Lakó (sima felhasználó)
+* A Bejelentkezés oldalon írd be az e-mail címhez például: anna@pelda.hu, jelszónak bármit (például 123456).
+Kattints a Belépés gombra.
+* A localhost:4200/user oldalra kerülsz. A menüben “Saját bejelentéseim”, a neved és “(lakó)” áll.
+* Töltsd ki az Új hibabejelentés űrlapot, és küldd be. A bejelentés megjelenik a Saját bejelentéseim listában “Beküldve” státusszal.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.2.
-
-## Development server
-
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+# Admin
+Kattints a menüben a Kijelentkezés gombra.
+* Lépj be az admin@rers.hu e-mail címmel és bármilyen jelszóval.
+* Az /admin oldalra kerülsz. A menüben “Admin felület” és “(admin)” áll.
+* Itt látod Anna bejelentését a táblázatban, és a legördülő listával átállíthatod a státuszt (Beküldve, Folyamatban, Megoldva).
+* Lépj ki, és lépj be újra Annaként: a saját listájában a módosított státuszt látod
