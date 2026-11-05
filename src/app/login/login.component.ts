@@ -28,7 +28,7 @@ export class LoginComponent {
     }
     const { email, password } = this.form.getRawValue();
     if (this.auth.login(email, password)) {
-      this.router.navigate(['/home']);
+      this.router.navigate([this.auth.homeUrl()]);
     } else {
       this.error.set('Hibás e-mail cím vagy jelszó.');
     }
