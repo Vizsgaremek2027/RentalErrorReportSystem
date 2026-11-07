@@ -1,6 +1,5 @@
 <section class="panel">
   <h1>Üdv, {{ auth.user()?.name }}!</h1>
-
   <h2>Új hibabejelentés</h2>
   <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
     <label for="title">Mi a probléma? (rövid cím)</label>
@@ -25,12 +24,18 @@
     @if (form.controls.description.touched && form.controls.description.invalid) {
       <p class="field-error" role="alert">Írd le a hibát legalább 10 karakterben.</p>
     }
-
-    <button type="submit" class="btn">Bejelentés beküldése</button>
+    
+    <button type="submit" class="btn" >Bejelentés beküldése</button>
     @if (sent()) {
       <p class="success" role="status">A bejelentést elküldtük a közös képviselőnek.</p>
     }
   </form>
+
+  <h2>Képek</h2>
+  <form class="upload-form">Képek feltöltése</form>
+
+  <label for="file">Képek feltöltése</label>
+  <input type="file" id="file" class="form-control" />
 
   <h2>Saját bejelentéseim</h2>
   <ul class="reports">
@@ -46,4 +51,6 @@
       <li class="empty">Még nincs bejelentésed.</li>
     }
   </ul>
+
+
 </section>

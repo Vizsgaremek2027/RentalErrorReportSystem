@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,12 @@ export class LoginComponent {
   protected submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      Swal.fire({
+        title: 'Hiba!',
+        text: 'Hibás e-mail cím vagy jelszó. Kérlek, ellenőrizd az adatokat és próbáld újra.',
+        icon: 'error',
+        confirmButtonText: 'Rendben',
+      })
       return;
     }
     const { email, password } = this.form.getRawValue();

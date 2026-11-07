@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import Swal from 'sweetalert2';
 
 function passwordsMatch(group: AbstractControl): ValidationErrors | null {
   const password = group.get('password')?.value;
@@ -41,6 +42,12 @@ export class RegisterComponent {
   protected submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      Swal.fire({
+        title: 'Hiba!',
+        text: 'Kérem töltse ki az összes mezőt.',
+        icon: 'warning',
+        confirmButtonText: 'Rendben',
+      })
       return;
     }
     const { name, email, password } = this.form.getRawValue();

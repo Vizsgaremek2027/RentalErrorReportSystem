@@ -4,6 +4,7 @@
 Kattints a Belépés gombra.
 * A localhost:4200/user oldalra kerülsz. A menüben “Saját bejelentéseim”, a neved és “(lakó)” áll.
 * Töltsd ki az Új hibabejelentés űrlapot, és küldd be. A bejelentés megjelenik a Saját bejelentéseim listában “Beküldve” státusszal.
+* A lakó fel tud tölteni képeket (fejlesztés alatt áll...)
 
 # Admin
 Kattints a menüben a Kijelentkezés gombra.
@@ -11,3 +12,10 @@ Kattints a menüben a Kijelentkezés gombra.
 * Az /admin oldalra kerülsz. A menüben “Admin felület” és “(admin)” áll.
 * Itt látod Anna bejelentését a táblázatban, és a legördülő listával átállíthatod a státuszt (Beküldve, Folyamatban, Megoldva).
 * Lépj ki, és lépj be újra Annaként: a saját listájában a módosított státuszt látod
+
+# SweetAlert integrálása
+SweetAlert2 integrálva lett ezekben a komponensekben:
+* login.component.ts
+* register.component.ts
+* user.component.ts
+

@@ -19,6 +19,7 @@
     "@angular/router": "^22.2.0",
     "bootstrap": "^5.3.8",
     "rxjs": "~7.8.0",
+    "sweetalert2": "^11.26.25",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -28,6 +29,6 @@
     "jsdom": "^30.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
-    "vitest": "^5.0.0"
+    "vitest": "4.1.11"
   }
 }

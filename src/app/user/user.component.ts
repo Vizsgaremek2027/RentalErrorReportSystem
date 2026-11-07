@@ -2,7 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { ReportService } from '../report.service';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-user',
   imports: [ReactiveFormsModule],
@@ -30,12 +30,35 @@ export class UserComponent {
   protected submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+
+      Swal.fire({
+        title: 'Hiányzó adatok!',
+        text: 'Kérlek töltsd ki az összes mezőt, és győződj meg róla, hogy a leírás legalább 10 karakter hosszú.',
+        icon: 'warning',
+        confirmButtonText: 'Rendben',
+      })
       return;
     }
     const reporter = this.auth.user()?.email;
-    if (!reporter) return;
+    if (!reporter){
+      Swal.fire({
+        title: 'Hiba!',
+        text: 'A bejelentkezéshez regisztráció szükséges!',
+        icon: 'error',
+        confirmButtonText: 'Rendben',
+      });
+      return;
+    }
     this.reportService.add(this.form.getRawValue(), reporter);
     this.form.reset();
     this.sent.set(true);
+
+    Swal.fire({
+      title: 'Sikeres bejelentés!',
+      text: 'A bejelentését sikeresen rögzítettük.',
+      icon: 'success',
+      confirmButtonText: 'Rendben',
+      confirmButtonColor: '#3085d6'
+    });
   }
 }

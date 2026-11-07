@@ -54,7 +54,7 @@
     background: currentColor;
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
 }
 
 .nav-link:hover,
@@ -68,12 +68,9 @@
 }
 
 .logo {
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
 }
 
-.logo:hover {
-    transform: scale(1.08);
-}
 
 /* ---------- Kijelentkezés gomb (jobb felső sarok, piros felirat) ---------- */
 
