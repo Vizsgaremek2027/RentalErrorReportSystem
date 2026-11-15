@@ -27,12 +27,13 @@ export class LoginComponent {
       this.form.markAllAsTouched();
       Swal.fire({
         title: 'Hiba!',
-        text: 'Hibás e-mail cím vagy jelszó. Kérlek, ellenőrizd az adatokat és próbáld újra.',
+        text: 'Hiányzó adatok vagy helytelen e-mail vagy jelszó! Kérlek töltsd ki az összes mezőt helyesen.',
         icon: 'error',
         confirmButtonText: 'Rendben',
       })
       return;
     }
+
     const { email, password } = this.form.getRawValue();
     if (this.auth.login(email, password)) {
       this.router.navigate([this.auth.homeUrl()]);
