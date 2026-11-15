@@ -4,6 +4,7 @@
   padding: 0 16px;
   text-align: center;
   animation: fade-up 0.6s ease-out both;
+  cursor: default;
 }
 
 h1 {
@@ -34,6 +35,7 @@ h1 {
 
 .btn:hover {
   transform: translateY(-3px);
+  animation: cubic-bezier(0.075, 0.82, 0.165, 1) 0.25s ease;
 }
 
 .primary {
@@ -60,7 +62,7 @@ h1 {
   padding: 0 16px;
 }
 
-.card {
+.errReport, .statusTracking, .meterReading {
   padding: 22px;
   background: #b0bcff;
   border: 2px solid rgb(234, 235, 241);
@@ -68,19 +70,30 @@ h1 {
   box-shadow: 0 8px 20px rgba(4, 11, 54, 0.2);
   animation: fade-up 0.7s ease-out both;
   transition: transform 0.25s ease;
+  cursor: default;
+  text-align: center;
+  opacity: 0.8;
+  text-decoration: none;
+  text-transform: uppercase;
 }
 
-.card:hover {
+.errReport:hover {
+  transform: translateY(-5px);
+}
+.statusTracking:hover {
+  transform: translateY(-5px);
+}
+.meterReading:hover {
   transform: translateY(-5px);
 }
 
-.card h2 {
+.errReport h2, .statusTracking h2, .meterReading h2 {
   margin: 0 0 10px;
   font-size: 1.25rem;
   color: #040b36;
 }
 
-.card p {
+.errReport p, .statusTracking p, .meterReading p {
   margin: 0;
   color: #040b36;
 }
@@ -91,8 +104,21 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero, .card, .btn {
+  .hero, .errReport, .btn {
     animation: none;
     transition: none;
   }
 }
+@media (prefers-reduced-motion: reduce) {
+  .hero, .statusTracking, .btn {
+    animation: none;
+    transition: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero, .meterReading, .btn {
+    animation: none;
+    transition: none;
+  }
+}
+
