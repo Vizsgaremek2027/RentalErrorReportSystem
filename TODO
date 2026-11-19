@@ -1,6 +1,5 @@
-Képfeltöltés fejlesztése
 Folyamattábla kidolgozása
 Egyedi Ikonok kidolgozása
 Mérőóra-diktálás komponens
-
+Egy külön komponens ahova a felhasználó be tudja írni a gázóra, villanyóra és vízóra adatait
 Admin nézetben a bejelentő neve látszik, de kelleni fog egy új oszlop ahol az email címe is látszódni fog
