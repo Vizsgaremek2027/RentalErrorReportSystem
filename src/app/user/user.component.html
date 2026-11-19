@@ -24,18 +24,52 @@
     @if (form.controls.description.touched && form.controls.description.invalid) {
       <p class="field-error" role="alert">Írd le a hibát legalább 10 karakterben.</p>
     }
-    
-    <button type="submit" class="btn" >Bejelentés beküldése</button>
+
+    <label for="images">Képek csatolása (nem kötelező)</label>
+    <div class="file-picker">
+      <input
+        #fileInput
+        id="images"
+        type="file"
+        class="file-hidden"
+        accept="image/*"
+        multiple
+        (change)="onFileSelected($event)"
+      />
+      <button type="button" class="btn file-btn" (click)="fileInput.click()">
+        Fájlok kiválasztása
+      </button>
+      <span class="file-name">
+        @if (previews().length === 0) {
+          Nincs kiválasztott fájl
+        } @else {
+          {{ previews().length }} kép kiválasztva
+        }
+      </span>
+    </div>
+
+    @if (previews().length) {
+      <div class="image-grid">
+        @for (src of previews(); track $index) {
+          <figure>
+            <img [src]="src" alt="Előnézet" />
+            <button type="button" class="remove-btn" (click)="removePreview($index, fileInput)">
+              Eltávolítás
+            </button>
+          </figure>
+        }
+      </div>
+    }
+
+    @if (uploadError()) {
+      <p class="field-error" role="alert">{{ uploadError() }}</p>
+    }
+
+    <button type="submit" class="btn">Bejelentés beküldése</button>
     @if (sent()) {
       <p class="success" role="status">A bejelentést elküldtük a közös képviselőnek.</p>
     }
   </form>
-
-  <h2>Képek</h2>
-  <form class="upload-form">Képek feltöltése</form>
-
-  <label for="file">Képek feltöltése</label>
-  <input type="file" id="file" class="form-control" />
 
   <h2>Saját bejelentéseim</h2>
   <ul class="reports">
@@ -44,6 +78,13 @@
         <div>
           <strong>{{ r.title }}</strong>
           <span class="category">{{ r.category }}</span>
+          @if (imagesFor(r.id).length) {
+            <div class="image-grid small">
+              @for (src of imagesFor(r.id); track $index) {
+                <img [src]="src" alt="Csatolt kép" />
+              }
+            </div>
+          }
         </div>
         <span class="badge">{{ r.status }}</span>
       </li>
@@ -51,6 +92,4 @@
       <li class="empty">Még nincs bejelentésed.</li>
     }
   </ul>
-
-
 </section>

@@ -1,7 +1,7 @@
 # Lakó (sima felhasználó)
 * A Bejelentkezés oldalon írd be az e-mail címhez például: anna@pelda.hu, jelszónak bármit (például: Rers-Teszt-2026!).
 * Előtte regisztráld, ha azt írja hogy már létezik akkor random regisztrálj egy másikat.
-Kattints a Belépés gombra.
+  Kattints a Belépés gombra.
 * A localhost:4200/user oldalra kerülsz. A menüben “Saját bejelentéseim”, a neved és “(lakó)” áll.
 * Töltsd ki az Új hibabejelentés űrlapot, és küldd be. A bejelentés megjelenik a Saját bejelentéseim listában “Beküldve” státusszal.
 * A lakó fel tud tölteni képeket (fejlesztés alatt áll...)

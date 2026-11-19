@@ -5,15 +5,28 @@
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>Hiba</th><th>Kategória</th><th>Leírás</th><th>Bejelentő</th><th>Státusz</th></tr>
+        <tr>
+          <th>Hiba</th>
+          <th>Kategória</th>
+          <th>Leírás</th>
+          <th>Bejelentő</th>
+          <th>Státusz</th>
+        </tr>
       </thead>
       <tbody>
         @for (r of reportService.reports(); track r.id) {
           <tr>
             <td>{{ r.title }}</td>
             <td>{{ r.category }}</td>
-            <td>{{ r.description }}</td>
-            <td>{{ r.reporter }}</td>
+            <td class="desc">
+              {{ r.description }}
+              @if (imagesFor(r.id).length) {
+                <button type="button" class="view-btn" (click)="openViewer(r.id)">
+                  Kép megtekintése ({{ imagesFor(r.id).length }})
+                </button>
+              }
+            </td>
+            <td>{{ displayName(r.reporter) }}</td>
             <td>
               <select [attr.aria-label]="'Státusz: ' + r.title" (change)="onStatusChange(r.id, $event)">
                 @for (s of reportService.statuses; track s) {
@@ -28,4 +41,21 @@
       </tbody>
     </table>
   </div>
+
+  @if (viewer(); as v) {
+    <div class="lightbox" (click)="closeViewer()" role="dialog" aria-modal="true" aria-label="Kép megtekintése">
+      <div class="lightbox-content" (click)="$event.stopPropagation()">
+        <img [src]="v.images[v.index]" alt="Csatolt kép" />
+
+        <div class="lightbox-bar">
+          @if (v.images.length > 1) {
+            <button type="button" class="lb-btn" (click)="prev()">‹ Előző</button>
+            <span>{{ v.index + 1 }} / {{ v.images.length }}</span>
+            <button type="button" class="lb-btn" (click)="next()">Következő ›</button>
+          }
+          <button type="button" class="lb-btn close" (click)="closeViewer()">Bezárás</button>
+        </div>
+      </div>
+    </div>
+  }
 </section>

@@ -1,8 +1,8 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { ReportService } from '../report.service';
-import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-user',
   imports: [ReactiveFormsModule],
@@ -10,55 +10,116 @@ import Swal from 'sweetalert2';
   styleUrl: './user.component.css',
 })
 export class UserComponent {
-  protected readonly auth = inject(AuthService);
-  protected readonly reportService = inject(ReportService);
-  private readonly fb = inject(NonNullableFormBuilder);
+  auth = inject(AuthService);
+  reportService = inject(ReportService);
+  private fb = inject(FormBuilder);
 
-  // Csak a bejelentkezett lakó saját bejelentései (az e-mail cím azonosítja)
-  protected readonly myReports = computed(() =>
-    this.reportService.reports().filter(r => r.reporter === this.auth.user()?.email),
-  );
+  sent = signal(false);
 
-  protected readonly sent = signal(false);
-
-  protected readonly form = this.fb.group({
-    title: ['', [Validators.required]],
-    category: ['', [Validators.required]],
+  form = this.fb.nonNullable.group({
+    title: ['', Validators.required],
+    category: ['', Validators.required],
     description: ['', [Validators.required, Validators.minLength(10)]],
   });
 
-  protected submit(): void {
+  myReports = () =>
+    this.reportService.reports().filter(r => r.reporter === this.auth.user()?.name);
+
+  private readonly IMG_KEY = 'rental-error-report-images-by-id';
+
+  previews = signal<string[]>([]);
+  uploadError = signal('');
+  private imageMap = signal<Record<string, string[]>>(this.loadImageMap());
+
+  imagesFor(id: string | number): string[] {
+    return this.imageMap()[String(id)] ?? [];
+  }
+
+  async onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const files = input.files ? Array.from(input.files) : [];
+
+    this.uploadError.set('');
+
+    const valid = files.filter(f => f.type.startsWith('image/'));
+    if (valid.length !== files.length) {
+      this.uploadError.set('Csak képfájlokat lehet csatolni.');
+    }
+
+    try {
+      this.previews.set(await Promise.all(valid.map(f => this.resizeImage(f))));
+    } catch {
+      this.uploadError.set('Nem sikerült beolvasni a képet.');
+    }
+  }
+
+  removePreview(index: number, fileInput: HTMLInputElement) {
+    const left = this.previews().filter((_, i) => i !== index);
+    this.previews.set(left);
+    if (!left.length) fileInput.value = '';
+  }
+
+  submit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      return;
+    }
 
-      Swal.fire({
-        title: 'Hiányzó adatok!',
-        text: 'Kérlek töltsd ki az összes mezőt, és győződj meg róla, hogy a leírás legalább 10 karakter hosszú.',
-        icon: 'warning',
-        confirmButtonText: 'Rendben',
-      })
-      return;
+    const before = new Set(this.myReports().map(r => String(r.id)));
+
+    this.reportService.add(this.form.getRawValue(), this.auth.user()?.name ?? '');
+
+    const created = this.myReports().find(r => !before.has(String(r.id)));
+
+    if (created && this.previews().length) {
+      this.saveImages(String(created.id), this.previews());
     }
-    const reporter = this.auth.user()?.email;
-    if (!reporter){
-      Swal.fire({
-        title: 'Hiba!',
-        text: 'A bejelentkezéshez regisztráció szükséges!',
-        icon: 'error',
-        confirmButtonText: 'Rendben',
-      });
-      return;
-    }
-    this.reportService.add(this.form.getRawValue(), reporter);
-    this.form.reset();
+
+    this.form.reset({ title: '', category: '', description: '' });
+    this.previews.set([]);
+    this.uploadError.set('');
+    const fileEl = document.getElementById('images') as HTMLInputElement | null;
+    if (fileEl) fileEl.value = '';
     this.sent.set(true);
+  }
 
-    Swal.fire({
-      title: 'Sikeres bejelentés!',
-      text: 'A bejelentését sikeresen rögzítettük.',
-      icon: 'success',
-      confirmButtonText: 'Rendben',
-      confirmButtonColor: '#3085d6'
+  private saveImages(id: string, images: string[]) {
+    const updated = { ...this.imageMap(), [id]: images };
+    try {
+      localStorage.setItem(this.IMG_KEY, JSON.stringify(updated));
+      this.imageMap.set(updated);
+    } catch {
+      this.uploadError.set('A bejelentés elment, de a képek nem fértek el a böngésző tárolójában.');
+    }
+  }
+
+  private loadImageMap(): Record<string, string[]> {
+    try {
+      const raw = localStorage.getItem(this.IMG_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  private resizeImage(file: File, maxSize = 800): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(reader.error);
+      reader.onload = () => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('Hibás kép'));
+        img.onload = () => {
+          const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL('image/jpeg', 0.7));
+        };
+        img.src = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     });
   }
 }
