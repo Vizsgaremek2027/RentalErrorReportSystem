@@ -105,6 +105,18 @@
     }
 }
 
+.apartmanmeterButton    {
+    justify-self: end;
+    padding: 10px 20px;
+    background-color: #b0bcff;
+    color: #124ae4;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
 /* ---------- Lábléc ---------- */
 
 .footer {
@@ -142,3 +154,4 @@
     overflow: hidden;
     opacity: 0.5;
 }
+

@@ -6,6 +6,7 @@ import { RegisterComponent } from './register/register.component';
 import { AdminComponent } from './admin/admin.component';
 import { UserComponent } from './user/user.component';
 import { adminGuard, authGuard } from './guards';
+import { ApartmanmeterComponent } from './apartmanmeter/apartmanmeter.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,5 +15,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'user', component: UserComponent, canActivate: [authGuard] },
-    { path: 'admin', component: AdminComponent, canActivate: [adminGuard] }
+    { path: 'admin', component: AdminComponent, canActivate: [adminGuard] },
+    { path: 'apartmanmeter', component: ApartmanmeterComponent, canActivate: [authGuard] },
 ];
